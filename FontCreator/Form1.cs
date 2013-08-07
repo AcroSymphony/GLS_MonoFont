@@ -75,8 +75,15 @@ namespace FontCreator
 
         void save()
         {
-            font.Save();
-            File.Copy("path.xml", Environment.CurrentDirectory + "\\..\\..\\..\\Mojo\\bin\\WindowsGL\\Debug\\path.xml", true);
+            try
+            {
+                font.Save();
+                File.Copy("path.xml", Environment.CurrentDirectory + "\\..\\..\\..\\Mojo\\bin\\WindowsGL\\Debug\\path.xml", true);
+            }
+            catch (Exception ee)
+            {
+
+            }
         }
 
         void load()
@@ -174,17 +181,27 @@ namespace FontCreator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            char c = char.Parse(textBox2.Text.Trim());
-            var v = new GLS_Letter(c, (int)numericUpDown1.Value, (int)numericUpDown2.Value);
-            v.data = new byte[v.Width][];
-            for (int i = 0; i < v.Width; i++)
-                v.data[i] = new byte[v.Height];
-            listBox1.Items.Add(font.addLetter(v));
+            char c = '\0';
+            if (char.TryParse(textBox2.Text.Trim(), out c))
+            {
+                var v = new GLS_Letter(c, (int)numericUpDown1.Value, (int)numericUpDown2.Value);
+                v.data = new byte[v.Width][];
+                for (int i = 0; i < v.Width; i++)
+                    v.data[i] = new byte[v.Height];
+                GLS_Letter letter = font.addLetter(v);
+                if (letter != null)
+                    listBox1.Items.Add(letter);
+            }
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
         {
             DrawToLetter(e);
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 

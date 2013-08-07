@@ -72,8 +72,12 @@ namespace FontEngine
 
         public GLS_Letter addLetter(GLS_Letter v)
         {
-            this.letters.Add(v.letter, v);
-            return this.letters[v.letter];
+            if (!this.letters.ContainsKey(v.letter))
+            {
+                this.letters.Add(v.letter, v);
+                return this.letters[v.letter];
+            }
+            return null;
         }
 
         public System.Drawing.Point addPoints(System.Drawing.Point a, System.Drawing.Point b)
